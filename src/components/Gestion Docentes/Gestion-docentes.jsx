@@ -12,6 +12,7 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import Barradebusqueda from './Barra-de-busqueda';
 
 const GestionDocentes = () => {
 
@@ -36,31 +37,10 @@ const GestionDocentes = () => {
             </Box>
 
             {/* Barra de busqueda */}
-            <Box>
-                <Autocomplete
-                    fullWidth
-                    freeSolo
-                    options={[]}
-                    renderInput={(params) => (
-                        <TextField
-                            fullWidth
-                            {...params}
-                            label="Buscar Docente"
-                            variant="outlined"
-                            size="small"
-                            InputProps={{
-                                ...params.InputProps,
-                                startAdornment: (
-                                    <SearchIcon style={{ marginRight: '8px' }} />
-                                ),
-                            }}
-                        />
-                    )}
-                    sx={{ px: 4,}}
-                    placeholder="Buscar Docente"
-                >
-                </Autocomplete>
-            </Box>
+            <Barradebusqueda 
+                label='Buscar Docente'
+                placeholder='Buscar por nombre, cédula o asignatura'
+            />
 
             {/* Tabla de docentes */}
             <Grid container spacing={1} sx={{ p: 4, m: 4, borderRadius: '8px', border: '1px solid #ccc', backgroundColor: '#f9f9f9' }}>

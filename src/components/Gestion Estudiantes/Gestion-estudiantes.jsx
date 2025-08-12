@@ -14,6 +14,8 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import TablaEstudiantes from './Tabla-estudiantes';
+import TablaCompleta from './Tabla-prueba-deep';
+import Barradebusqueda from '../Gestion Docentes/Barra-de-busqueda';
 
 const GestionEstudiantes = () => {
   const [age, setAge] = React.useState('');
@@ -27,12 +29,6 @@ const GestionEstudiantes = () => {
   const handleEstudianteChange = (event) => {
     setEstudiante(event.target.value);
   };
-
-  const [seccion, setSeccion] = React.useState("");
-
-  const handleSeccionChange = (event) => {
-    setSeccion(event.target.value);
-  }
   
     return (
       <>
@@ -53,31 +49,16 @@ const GestionEstudiantes = () => {
 
         {/* Barra de busqueda y Opciones del filtro  */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px' }}>
-          <Autocomplete
-            fullWidth
-            freeSolo
-            options={[]}
-            renderInput={(params) => (
-              <TextField
-                fullWidth
-                {...params}
-                label="Buscar Estudiante"
-                variant="outlined"
-                size="small"
-                InputProps={{
-                  ...params.InputProps,
-                  startAdornment: (
-                    <SearchIcon style={{ marginRight: '8px' }} />
-                  ),
-                }}
-              />
-            )}
-            sx={{ px: 4,}}
-            placeholder="Buscar Estudiante"
-          >
-          </Autocomplete>
+          <Box sx={{ flex: 1, mr: 2 }}>
+            <Barradebusqueda 
+              label='Buscar Estudiante'
+              placeholder='Buscar por nombre, apellido o ID'
+              icon={<SearchIcon />}
+              sx={{ width: '100%' }}
+            />
+          </Box>
 
-            {/* Filtros para los estudiantes */}
+          {/* Filtros para los estudiantes */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <FormControl sx={{ minWidth: 120, mr: 2 }} size="small">
             <Select
@@ -99,26 +80,6 @@ const GestionEstudiantes = () => {
               <MenuItem value={6}>5to Año</MenuItem>
             </Select>
             </FormControl>
-
-            <FormControl sx={{ minWidth: 120, mr: 2 }} size="small">
-            <Select
-              displayEmpty
-              value={seccion}
-              onChange={handleSeccionChange}
-              input={<OutlinedInput />}
-              renderValue={
-                estudiante !== "" ? undefined : () => (
-                  "Todas las Secciones"
-                )
-              }
-            >
-              <MenuItem value={1}>Todas las Secciones</MenuItem>
-              <MenuItem value={2}>Sección A</MenuItem>
-              <MenuItem value={3}>Sección B</MenuItem>
-              <MenuItem value={4}>Sección C</MenuItem>
-            </Select>
-            </FormControl>
-
 
             <FormControl sx={{ minWidth: 120, mr: 2 }} size="small">
             <Select

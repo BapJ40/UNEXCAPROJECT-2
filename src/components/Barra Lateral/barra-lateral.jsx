@@ -30,7 +30,7 @@ export default function BarraLateral() {
         { text: 'Gestion de Docentes', icon: <GroupsIcon />, link: '/gestion-docentes' },
         { text: 'Asistencias Docentes', icon: <GroupAddIcon />, link: '/asistencia-docentes' },
         { text: 'Gestion de Estudiantes', icon: <SchoolIcon />, link: '/gestion-estudiantes' },
-        { text: 'Asistencia Estudiantil', icon: <PersonAddAlt1Icon /> },
+        { text: 'Asistencia Estudiantil', icon: <PersonAddAlt1Icon />, link: '/asistencia-estudiantil' },
         { text: 'Reportes / Informes', icon: <DescriptionIcon /> }
     ];
 
