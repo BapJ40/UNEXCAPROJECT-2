@@ -4,9 +4,7 @@ import Typography from '@mui/material/Typography';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Box from '@mui/material/Box';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import Autocomplete from '@mui/material/Autocomplete';
 import SearchIcon from '@mui/icons-material/Search';
-import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,11 +12,12 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import TablaEstudiantes from './Tabla-estudiantes';
-import TablaCompleta from './Tabla-prueba-deep';
-import Barradebusqueda from '../Gestion Docentes/Barra-de-busqueda';
+import Barradebusqueda from '../Componente generico/Barra-de-busqueda';
+import ModalAgregarEstudiante from './ModalAgregarEstudiante';
 
 const GestionEstudiantes = () => {
   const [age, setAge] = React.useState('');
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -41,8 +40,8 @@ const GestionEstudiantes = () => {
             <Button startIcon={<FileUploadIcon/>} variant="outlined" size="large" sx={{ fontSize: '15px', py: 1, mx: 2}}>
               Importar
             </Button>
-            <Button startIcon={<GroupAddIcon/>} variant="contained" size="large" sx={{ fontSize: '15px', py: 1, mx: 2}}>
-              Agregar Estudiante
+            <Button onClick={() => setModalOpen(true)} startIcon={<GroupAddIcon/>} variant="contained" size="large" sx={{ fontSize: '15px', py: 1, mx: 2}}>
+              Agregar Nuevo Estudiante
             </Button>
           </Box>
         </Box>
@@ -121,6 +120,9 @@ const GestionEstudiantes = () => {
           </Typography>
           <TablaEstudiantes />
         </Box>
+
+        {/* Modal para agregar estudiante */}
+        <ModalAgregarEstudiante open={modalOpen} onClose={() => setModalOpen(false)} />
       </>
     );
 }

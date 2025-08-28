@@ -3,6 +3,8 @@ import { Box, Paper, Typography } from '@mui/material';
 import BotonesRegistrosAsistencias from './Botones-Registros-asistencias';
 import RegistroDiario from './Registro Diario/Registro-Diario';
 import RegistroMensual from './Registro Mensual/RegistroMensual';
+import ConsultarAsistencia from './Consultar Asistencia/ConsultarAsistencia';
+import Reportes from './Reporte/Reportes';
 
 export default function AsistenciaEstudiantil() {
   const [vistalActual, setVistaActual] = React.useState('diario');
@@ -18,9 +20,9 @@ export default function AsistenciaEstudiantil() {
       case 'mensual':
         return <RegistroMensual />;
       case 'historial':
-        return <Typography variant="h6">Historial de Asistencia</Typography>;
+        return <ConsultarAsistencia />;
       case 'reportes':
-        return <Typography variant="h6">Reportes de Asistencia</Typography>;
+        return <Reportes />;
       default:
         return <RegistroDiario />;
     }
@@ -39,7 +41,9 @@ export default function AsistenciaEstudiantil() {
       </Box>
       {/* Botones de acción */}
       <Box>
-        <BotonesRegistrosAsistencias onCambiarVista={cambiarVista}/>
+        <BotonesRegistrosAsistencias 
+        onCambiarVista={cambiarVista}
+        vistaActiva={vistalActual}/>
       </Box>
 
       {/*Panel de control de asistencias*/}

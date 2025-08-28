@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import GenericTable from './TablaBase';
+import GenericTable from '../Componente generico/TablaBase';
 import Paper from '@mui/material/Paper';
 
 export default function Tablamaterias({ estudiante }) {

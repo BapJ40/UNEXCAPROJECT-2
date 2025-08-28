@@ -9,10 +9,11 @@ export default function DropdownSelector({
   label, 
   options, 
   value, 
-  onChange 
+  onChange,
+  multiple = false
 }) {
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 210 }}>
       <FormControl fullWidth>
         <InputLabel id={`${label}-select-label`}>{label}</InputLabel>
         <Select
@@ -21,6 +22,7 @@ export default function DropdownSelector({
           value={value}
           label={label}
           onChange={onChange}
+          multiple={multiple}
         >
           {options.map((option, index) => (
             <MenuItem key={index} value={option.value}>

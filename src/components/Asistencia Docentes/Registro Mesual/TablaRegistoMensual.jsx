@@ -1,25 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Checkbox, Typography } from '@mui/material';
 import { getDaysInMonth, isWeekend } from 'date-fns';
-import GenericTable from '../../Componente generico/TablaBase';
+import GenericTable from '../../Componente generico/TablaBase'; // Revisa que la ruta sea correcta
 
-// Ahora recibe 'estudiantes' como prop
-export default function TablaRegistroMensual({ fechaSeleccionada, estudiantes }) {
+// ... (estudiantesMock no cambia)
+const estudiantesMock = [
+  { id: 1, nombre: 'Ana García' },
+  { id: 2, nombre: 'Carlos Rodríguez' },
+  { id: 3, nombre: 'María López' },
+  { id: 4, nombre: 'José Martínez' },
+  { id: 5, nombre: 'Carmen Hernández' },
+];
+
+
+export default function TablaRegistroMensual({ fechaSeleccionada }) {
   const [columnas, setColumnas] = useState([]);
   const [asistencias, setAsistencias] = useState([]);
 
   useEffect(() => {
-    // La guardia ahora también verifica si hay estudiantes para mostrar
-    if (!fechaSeleccionada || !estudiantes) {
-      // Limpiamos la tabla si no hay datos
-      setColumnas([]);
-      setAsistencias([]);
+    // V V V AQUÍ ESTÁ LA SOLUCIÓN V V V
+    // Añadimos una "guardia". Si fechaSeleccionada no existe, no hacemos nada.
+    if (!fechaSeleccionada) {
       return; 
     }
 
+    // Ahora el resto del código es seguro, porque sabemos que fechaSeleccionada es una fecha válida.
     const anio = fechaSeleccionada.getFullYear();
     const mes = fechaSeleccionada.getMonth();
     const diasDelMes = getDaysInMonth(fechaSeleccionada);
+
+    // ... el resto de tu useEffect no necesita cambios ...
+
+    // 1. Generar los días hábiles (lunes a viernes)
     const diasHabiles = [];
     for (let i = 1; i <= diasDelMes; i++) {
       const dia = new Date(anio, mes, i);
@@ -59,18 +71,18 @@ export default function TablaRegistroMensual({ fechaSeleccionada, estudiantes })
 
     setColumnas(columnasFinales);
 
-    // Usamos la prop 'estudiantes' que viene del padre, en lugar de 'estudiantesMock'
-    const estadoInicialAsistencias = estudiantes.map(est => {
+    // 4. Inicializar el estado de las asistencias
+    const estadoInicialAsistencias = estudiantesMock.map(est => {
       const dias = {};
       diasHabiles.forEach(dia => {
-        dias[`dia_${dia}`] = false;
+        dias[`dia_${dia}`] = false; // Inicialmente nadie ha asistido
       });
-      // Usamos el 'nombre' del estudiante que nos llega por props
-      return { nombre: est.nombre, ...dias };
+      return { ...est, ...dias };
     });
+
     setAsistencias(estadoInicialAsistencias);
 
-  }, [fechaSeleccionada, estudiantes]); // La tabla se actualiza si la fecha O la lista de estudiantes cambia
+  }, [fechaSeleccionada]);
 
   const handleAsistenciaChange = (rowIndex, field, value) => {
     setAsistencias((prevAsistencias) => {
@@ -94,4 +106,3 @@ export default function TablaRegistroMensual({ fechaSeleccionada, estudiantes })
     />
   );
 }
-

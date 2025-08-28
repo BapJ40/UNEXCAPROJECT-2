@@ -4,7 +4,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Modalestudiantes from './Modal-estudiantes';
-import GenericTable from './TablaBase';
+import GenericTable from '../Componente generico/TablaBase';
 
 const estudiantes = [
   {
