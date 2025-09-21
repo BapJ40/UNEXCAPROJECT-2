@@ -61,10 +61,7 @@ export default function BarraLateral() {
         </Typography>
         </Toolbar>
         <Divider />
-        <List>
-        <Typography variant="subtitle2" noWrap sx={{ mb: 2, p: 0, m: 0, marginLeft: 2,}}>
-            Navegacion Principal
-        </Typography>
+        <List sx={{ p: 0 }}>
           {opciones.map(item => (
             <ListItem key={item.text} disablePadding>
               <ListItemButton component={Link} to={item.link}>

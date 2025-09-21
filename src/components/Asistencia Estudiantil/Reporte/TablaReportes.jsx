@@ -31,7 +31,7 @@ const CeldaAsistencia = ({ value }) => {
   );
 };
 
-export default function TablaReportes({ data, fechaSeleccionada }) {
+export default function TablaReportes({ data, fechaSeleccionada, vistaProfesor = false }) {
   // Generamos las columnas dinámicamente basado en la fecha
   const columnasReportes = useMemo(() => {
     if (!fechaSeleccionada) return [];
@@ -50,11 +50,11 @@ export default function TablaReportes({ data, fechaSeleccionada }) {
     }));
 
     return [
-      { field: 'nombre', headerName: 'Estudiante', align: 'left', sx: { position: 'sticky', left: 0, background: 'white', zIndex: 1 } },
+      { field: 'nombre', headerName: vistaProfesor ? 'Docente' : 'Estudiante', align: 'left', sx: { position: 'sticky', left: 0, background: 'white', zIndex: 1 } },
       ...columnasDias,
       { field: 'total', headerName: 'Total', align: 'center' },
     ];
-  }, [fechaSeleccionada]);
+  }, [fechaSeleccionada, vistaProfesor]);
 
   if (!data) {
     return (

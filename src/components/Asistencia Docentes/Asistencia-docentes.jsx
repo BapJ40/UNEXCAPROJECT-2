@@ -1,10 +1,11 @@
 import React from 'react'
 import { Box, Paper, Typography } from '@mui/material';
-import BotonesRegistrosAsistencias from './BotonesRegistrosAsistencias';
-import RegistroDiario from './Registro Diario/RegistroDiario';
-import RegistroMensual from './Registro Mesual/RegistroMensual';
-import ConsultarAsistencia from './Consultar Asistencia/ConsultarAsistencia';
-import Reportes from './Reporte/Reportes';
+import BotonesRegistrosAsistencias from '../Asistencia Estudiantil/Botones-Registros-asistencias';
+import RegistroDiario from '../Asistencia Estudiantil/Registro Diario/Registro-Diario';
+import RegistroMensual from '../Asistencia Estudiantil/Registro Mensual/RegistroMensual';
+import ConsultarAsistencia from '../Asistencia Estudiantil/Consultar Asistencia/ConsultarAsistencia';
+import Reportes from '../Asistencia Estudiantil/Reporte/Reportes';
+import Docente from '../Docentes';
 
 const AsistenciaDocentes = () => {
     const [vistalActual, setVistaActual] = React.useState('diario');
@@ -16,15 +17,15 @@ const AsistenciaDocentes = () => {
       const renderizarVista = () => {
         switch (vistalActual) {
           case 'diario':
-            return <RegistroDiario />;
+            return <RegistroDiario vistaProfesor={true} fuenteDeDatos={Docente} />;
           case 'mensual':
-            return <RegistroMensual />;
+            return <RegistroMensual vistaProfesor={true} fuenteDeDatos={Docente} />;
           case 'historial':
-            return <ConsultarAsistencia />;
+            return <ConsultarAsistencia vistaProfesor={true} fuenteDeDatos={Docente} />;
           case 'reportes':
-            return <Reportes />;
+            return <Reportes vistaProfesor={true} fuenteDeDatos={Docente} />;
           default:
-            return <RegistroDiario />;
+            return <RegistroDiario vistaProfesor={true} fuenteDeDatos={Docente} />;
         }
       };
       
@@ -41,7 +42,10 @@ const AsistenciaDocentes = () => {
           </Box>
           {/* Botones de acción */}
           <Box>
-            <BotonesRegistrosAsistencias onCambiarVista={cambiarVista}/>
+            <BotonesRegistrosAsistencias 
+              onCambiarVista={cambiarVista}
+              vistaActiva={vistalActual}
+            />
           </Box>
     
           {/*Panel de control de asistencias*/}

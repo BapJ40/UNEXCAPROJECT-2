@@ -23,3 +23,14 @@ export const materiaOptions = [
   { value: "fisica", label: "Física" },
   { value: "educacion_fisica", label: "Educación Física" },
 ];
+
+export const estadoOptions = [
+  { value: "Activo", label: "Activo" },
+  { value: "Inactivo", label: "Inactivo" },
+];
+
+export const generoOptions = [
+  { value: "Masculino", label: "Masculino" },
+  { value: "Femenino", label: "Femenino" },
+  { value: "Otro", label: "Otro" },
+];

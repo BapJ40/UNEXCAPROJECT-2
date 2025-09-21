@@ -4,13 +4,13 @@ import { getDaysInMonth, isWeekend } from 'date-fns';
 import GenericTable from '../../Componente generico/TablaBase';
 
 // Ahora recibe 'estudiantes' como prop
-export default function TablaRegistroMensual({ fechaSeleccionada, estudiantes }) {
+export default function TablaRegistroMensual({ fechaSeleccionada, fuenteDeDatos, vistaProfesor }) {
   const [columnas, setColumnas] = useState([]);
   const [asistencias, setAsistencias] = useState([]);
 
   useEffect(() => {
     // La guardia ahora también verifica si hay estudiantes para mostrar
-    if (!fechaSeleccionada || !estudiantes) {
+    if (!fechaSeleccionada || !fuenteDeDatos) {
       // Limpiamos la tabla si no hay datos
       setColumnas([]);
       setAsistencias([]);
@@ -38,39 +38,54 @@ export default function TablaRegistroMensual({ fechaSeleccionada, estudiantes })
       ),
     }));
 
-    // Calcular el total de asistencias para una fila/estudiante
-    const calcularTotal = (rowData) => {
-        const asistenciasMarcadas = diasHabiles.filter(dia => rowData[`dia_${dia}`]).length;
-        return `${asistenciasMarcadas}/${diasHabiles.length}`;
-    }
-
     // 3. Definir la estructura completa de las columnas
-    const columnasFinales = [
-      { field: 'nombre', headerName: 'Estudiante', align: 'left' },
-      ...columnasDinamicas,
-      { 
-        field: 'total', 
-        headerName: 'Total', 
-        align: 'center',
-        // Usamos el componente para mostrar un valor calculado
-        component: ({ rowData }) => <Typography variant="body2">{calcularTotal(rowData)}</Typography>
-      },
-    ];
+    let columnasFinales;
+
+    if (vistaProfesor) {
+      // Si es la vista de profesor, las columnas son más simples
+      columnasFinales = [
+        { field: 'nombre', headerName: 'Docente', align: 'left' },
+        ...columnasDinamicas,
+        { 
+          field: 'total', 
+          headerName: 'Días Laborados', 
+          align: 'center',
+          component: ({ rowData }) => {
+            const diasMarcados = diasHabiles.filter(dia => rowData[`dia_${dia}`]).length;
+            return `${diasMarcados}/${diasHabiles.length}`;
+          }
+        },
+      ];
+    } else {
+      // Si es la vista de estudiante, usamos las columnas que ya tenías
+      columnasFinales = [
+        { field: 'nombre', headerName: 'Estudiante', align: 'left' },
+        ...columnasDinamicas,
+        { 
+          field: 'total', 
+          headerName: 'Total Asistencias', 
+          align: 'center',
+          component: ({ rowData }) => {
+            const diasMarcados = diasHabiles.filter(dia => rowData[`dia_${dia}`]).length;
+            return `${diasMarcados}/${diasHabiles.length}`;
+          }
+        },
+      ];
+    }
 
     setColumnas(columnasFinales);
 
-    // Usamos la prop 'estudiantes' que viene del padre, en lugar de 'estudiantesMock'
-    const estadoInicialAsistencias = estudiantes.map(est => {
+    const estadoInicialAsistencias = fuenteDeDatos.map(item => {
       const dias = {};
       diasHabiles.forEach(dia => {
         dias[`dia_${dia}`] = false;
       });
-      // Usamos el 'nombre' del estudiante que nos llega por props
-      return { nombre: est.nombre, ...dias };
+      return { id: item.id || item.cedula, nombre: item.nombre, ...dias };
     });
     setAsistencias(estadoInicialAsistencias);
 
-  }, [fechaSeleccionada, estudiantes]); // La tabla se actualiza si la fecha O la lista de estudiantes cambia
+    // Añadimos 'vistaProfesor' a las dependencias para que las columnas se regeneren si cambia el modo
+  }, [fechaSeleccionada, fuenteDeDatos, vistaProfesor]); 
 
   const handleAsistenciaChange = (rowIndex, field, value) => {
     setAsistencias((prevAsistencias) => {

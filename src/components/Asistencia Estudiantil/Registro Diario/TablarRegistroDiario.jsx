@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import GenericTable from '../../Componente generico/TablaBase';
 import { Checkbox, TextField } from '@mui/material';
 
-export default function TablarRegistroDiario({ estudiantesFiltrados }) {
-  const [attendanceData, setAttendanceData] = useState([]);
+export default function TablaRegistroDiario({ fuenteDeDatos, vistaProfesor }) {
+  const [attendanceData, setAttendanceData] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setAttendanceData(
-      estudiantesFiltrados.map(e => ({
+      fuenteDeDatos.map(e => ({
         id: e.cedula,
-        Estudiante: e.nombre,
+        Nombre: e.nombre,
         Presente: false,
         Justificado: false,
-        Tarde: false, // <-- CAMBIO 1: Añadimos el nuevo campo al estado
+        Tarde: false,
         Observaciones: ''
       }))
     );
-  }, [estudiantesFiltrados]);
+  }, [fuenteDeDatos, vistaProfesor]);
 
   // <-- CAMBIO 2: Actualizamos la lógica de negocio para incluir "Tarde"
   const handleCellChange = (rowIndex, field, newValue) => {
@@ -66,8 +66,8 @@ export default function TablarRegistroDiario({ estudiantesFiltrados }) {
   // <-- CAMBIO 3: Actualizamos las columnas de la tabla
   const columns = [
     {
-      field: 'Estudiante',
-      headerName: 'Estudiante',
+      field: 'Nombre',
+      headerName: `${vistaProfesor ? 'Profesor' : 'Estudiante'}`,
       align: 'left',
       sx: { fontWeight: 'bold' }
     },

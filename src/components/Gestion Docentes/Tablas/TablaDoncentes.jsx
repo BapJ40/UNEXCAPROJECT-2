@@ -1,6 +1,6 @@
 import React from 'react';
-import GenericTable from '../Componente generico/TablaBase';
-import SelectsModal from './SelectsModal';
+import GenericTable from '../../Componente generico/TablaBase';
+import SelectsModal from '../Modales/SelectsModal';
 import { Typography } from '@mui/material';
 
 export default function TablaDoncentes({ todosLosEstudiantes, docente }) {

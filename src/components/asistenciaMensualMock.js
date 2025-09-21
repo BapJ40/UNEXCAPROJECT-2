@@ -150,5 +150,31 @@ export const asistenciaMensualMock = {
     "2025-08-05": { status: 'T', observacion: 'Llegó 15 minutos tarde.' },
     "2025-08-06": { status: 'P', observacion: '' },
     "2025-08-07": { status: 'A', observacion: 'Inasistencia no justificada.' },
+  },
+
+  // --- Docentes ---
+  // Profesor de Matemáticas (V-890123456)
+  "V-890123456": {
+    "2025-08-01": { status: 'P', observacion: '' },
+    "2025-08-04": { status: 'P', observacion: '' },
+    "2025-08-05": { status: 'T', observacion: 'Llegó 10 minutos tarde.' },
+    "2025-08-06": { status: 'P', observacion: '' },
+    "2025-08-07": { status: 'P', observacion: '' },
+  },
+  // Profesor de Lengua y Literatura (V-12345678)
+  "V-12345678": {
+    "2025-08-01": { status: 'P', observacion: '' },
+    "2025-08-04": { status: 'P', observacion: '' },
+    "2025-08-05": { status: 'P', observacion: '' },
+    "2025-08-06": { status: 'T', observacion: 'Llegó 5 minutos tarde.' },
+    "2025-08-07": { status: 'P', observacion: '' },
+  },
+  // Profesor de Física (V-987654321)
+  "V-987654321": {
+    "2025-08-01": { status: 'P', observacion: '' },
+    "2025-08-04": { status: 'A', observacion: '' },
+    "2025-08-05": { status: 'J', observacion: 'Justificativo en proceso.' },
+    "2025-08-06": { status: 'P', observacion: '' },
+    "2025-08-07": { status: 'P', observacion: '' },
   }
 };

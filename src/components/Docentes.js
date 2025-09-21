@@ -13,7 +13,8 @@ const datosDocentes = [
         cargo: 'Profesor Titular',
         seccion: ['B'],
         grado: ['4to'],
-        notas: { Matemáticas: 18, Ingles: 14 }
+        notas: { Matemáticas: 18, Ingles: 14 },
+        asistencias: 40
     },
     {
         id: 2,
@@ -26,7 +27,8 @@ const datosDocentes = [
         cargo: 'Profesor Asistente',
         seccion: ['B', 'C'],
         grado: ['3er', '2do'],
-        notas: { Historia: 13, Geografía: 11 }
+        notas: { Historia: 13, Geografía: 11 },
+        asistencias: 35
     },
     {
         id: 3,
@@ -39,7 +41,8 @@ const datosDocentes = [
         cargo: 'Profesor Asociado',
         seccion: ['C'],
         grado: ['2do'],
-        notas: { Física: 19, Química: 15 }
+        notas: { Física: 19, Química: 15 },
+        asistencias: 42
     },
     {
         id: 4,
@@ -52,7 +55,8 @@ const datosDocentes = [
         cargo: 'Profesor Titular',
         seccion: ['A', 'B'],
         grado: ['4to', '3er'],
-        notas: { Biología: 17, Educación_Física: 12 }
+        notas: { Biología: 17, Educación_Física: 12 },
+        asistencias: 40
     },
     {
         id: 5,
@@ -65,7 +69,8 @@ const datosDocentes = [
         cargo: 'Profesor Asistente',
         seccion: ['B', 'C'],
         grado: ['1er', '5to'],
-        notas: { Lengua: 16, Literatura: 10 }
+        notas: { Lengua: 16, Literatura: 10 },
+        asistencias: 38
     },
     {
         id: 6,
@@ -78,7 +83,8 @@ const datosDocentes = [
         cargo: 'Profesor Titular',
         seccion: ['A', 'C'],
         grado: ['3er', '4to'],
-        notas: { Informática: 20, Matemáticas: 18 }
+        notas: { Informática: 20, Matemáticas: 18 },
+        asistencias: 40
     },
     {
         id: 7,
@@ -91,7 +97,8 @@ const datosDocentes = [
         cargo: 'Profesor Asistente',
         seccion: ['B', 'A'],
         grado: ['2do', '1er'],
-        notas: { Educación_Física: 14, Geografía: 12 }
+        notas: { Educación_Física: 14, Geografía: 12 },
+        asistencias: 36
     },
     {
         id: 8,
@@ -104,7 +111,8 @@ const datosDocentes = [
         cargo: 'Profesor Asociado',
         seccion: ['C'],
         grado: ['4to'],
-        notas: { Química: 15, Física: 19 }
+        notas: { Química: 15, Física: 19 },
+        asistencias: 40
     }
 ];
 

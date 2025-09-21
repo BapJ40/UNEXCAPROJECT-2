@@ -2,29 +2,36 @@ import React from 'react';
 import { Typography } from '@mui/material'; // Ya no necesitamos Chip para esto
 import GenericTable from '../../Componente generico/TablaBase';
 
-export default function DetalleAsistenciaEstudiante({ estudiante }) {
+export default function DetalleAsistenciaEstudiante({ datos, vistaProfesor }) {
   // 1. Modificamos la preparación de datos para la tabla.
-  const datosTablaMaterias = estudiante.materias.map(materia => {
-    // Buscamos la asistencia correspondiente a la materia, manejando mayúsculas/minúsculas.
-    // APUNTAMOS A LA NUEVA PROPIEDAD 'asistencias'.
-    const asistenciaKey = Object.keys(estudiante.asistencias).find(
-      key => key.toLowerCase() === materia.toLowerCase()
-    );
-    // Si encontramos la asistencia, la usamos; si no, ponemos 0.
-    const asistencia = asistenciaKey ? estudiante.asistencias[asistenciaKey] : 0;
-
-    return {
-      id: materia,
-      materia: materia,
-      asistencias: asistencia, // <-- Creamos la propiedad 'asistencias' para la tabla
-    };
-  });
+  const datosTablaMaterias = vistaProfesor
+    ? datos.map(profesor => {
+        return {
+          id: profesor.profesor,
+          nombre: profesor.nombre,
+          asistencias: profesor.asistencias // <-- Creamos la propiedad 'asistencias' para la tabla
+        };
+      })
+    : datos.materias.map(materia => {
+        // Buscamos la asistencia correspondiente a la materia, manejando mayúsculas/minúsculas.
+        // APUNTAMOS A LA NUEVA PROPIEDAD 'asistencias'.
+        const asistenciaKey = Object.keys(datos.asistencias).find(
+          key => key.toLowerCase() === materia.toLowerCase()
+        );
+        // Si encontramos la asistencia, la usamos; si no, ponemos 0.
+        const asistencia = asistenciaKey ? datos.asistencias[asistenciaKey] : 0;
+        return {
+          id: materia,
+          materia: materia,
+          asistencias: asistencia, // <-- Creamos la propiedad 'asistencias' para la tabla
+        };
+      });
 
   // 2. Definimos las nuevas columnas para mostrar las asistencias.
   const columnasTabla = [
     {
-      field: 'materia',
-      headerName: 'Materia',
+      field: vistaProfesor ? 'nombre' : 'materia',
+      headerName: vistaProfesor ? 'Profesor' : 'Materia',
       align: 'left',
       sx: { fontWeight: 'bold' }
     },
@@ -45,7 +52,7 @@ export default function DetalleAsistenciaEstudiante({ estudiante }) {
   return (
     <>
       <Typography variant="h6" sx={{ mb: 2 }}>
-        Historial de Asistencias de: <strong>{estudiante.nombre}</strong>
+        Historial de Asistencias de: <strong>{datos.nombre}</strong>
       </Typography>
       <GenericTable
         columns={columnasTabla}

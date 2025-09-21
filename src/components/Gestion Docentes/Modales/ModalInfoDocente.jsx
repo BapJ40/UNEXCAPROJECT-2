@@ -1,9 +1,9 @@
 // Archivo: Modalestudiantes.js (versión refactorizada)
 import * as React from 'react';
 import { Box, Typography } from '@mui/material';
-import ModalGenerico from '../Componente generico/ModalGenerico'; // <- Importamos nuestro nuevo modal genérico
-import TablaDoncentes from './TablaDoncentes';
-import Estudiantes from '../Estudiantes';
+import ModalGenerico from '../../Componente generico/ModalGenerico'; // <- Importamos nuestro nuevo modal genérico
+import TablaDoncentes from '../Tablas/TablaDoncentes';
+import Estudiantes from '../../Estudiantes';
 
 export default function ModalInfoDocente({ open, onClose, docente }) {
     // Las props 'isEdit' y 'isView' ya no se necesitan aquí,

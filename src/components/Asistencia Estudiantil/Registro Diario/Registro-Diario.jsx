@@ -1,73 +1,71 @@
-import React, { useState, useMemo, useEffect } from 'react'; // Añadimos useEffect
+import React from 'react'; // Añadimos useEffect
 import { Typography, Box, Button } from '@mui/material';
-import BotonesRegistrosDiario from './Botones-Registros-Diario';
+import BotonesRegistros from './Botones-Registros-Diario';
 import TablarRegistroDiario from './TablarRegistroDiario';
-import estudiantes from '../../Estudiantes'; // Tu fuente de datos principal
 
-export default function RegistroDiario() {
+export default function RegistroDiario( { vistaProfesor = false, fuenteDeDatos } ) {
   // --- ESTADO ---
   // El estado de los filtros se mantiene igual.
-  const [añoSeleccionado, setAñoSeleccionado] = useState(''); // Usamos un nombre más claro
-  const [seccionSeleccionada, setSeccionSeleccionada] = useState('');
-  const [materiaSeleccionada, setMateriaSeleccionada] = useState('');
-  const [busqueda, setBusqueda] = useState('');
+  const [añoSeleccionado, setAñoSeleccionado] = React.useState(''); // Usamos un nombre más claro
+  const [seccionSeleccionada, setSeccionSeleccionada] = React.useState('');
+  const [materiaSeleccionada, setMateriaSeleccionada] = React.useState('');
+  const [busqueda, setBusqueda] = React.useState('');
 
   // --- GENERACIÓN DE OPCIONES DINÁMICAS ---
 
   // 1. Generamos las opciones de AÑO a partir de la lista de estudiantes.
   // useMemo asegura que esto solo se calcule una vez.
-  const añoOptions = useMemo(() => {
-    const añosUnicos = [...new Set(estudiantes.map(est => est.año))];
+  // 2. Las opciones ahora se generan a partir de 'fuenteDeDatos'
+  const añoOptions = React.useMemo(() => {
+    const añosUnicos = [...new Set(fuenteDeDatos.flatMap(item => item.año))];
     return añosUnicos.map(año => ({ value: año, label: año }));
-  }, []); // El array vacío significa que no depende de nada y solo se ejecuta una vez
+  }, [fuenteDeDatos]);
 
-  // 2. Generamos las opciones de SECCIÓN de la misma manera.
-  const seccionOptions = useMemo(() => {
-    const seccionesUnicas = [...new Set(estudiantes.map(est => est.seccion))];
+  const seccionOptions = React.useMemo(() => {
+    const seccionesUnicas = [...new Set(fuenteDeDatos.flatMap(item => item.seccion))];
     return seccionesUnicas.map(seccion => ({ value: seccion, label: `Sección ${seccion}` }));
-  }, []);
+  }, [fuenteDeDatos]);
 
-  // 3. Filtramos los estudiantes BASADO en las selecciones de año y sección.
-  const estudiantesFiltrados = useMemo(() => {
-    if (!añoSeleccionado || !seccionSeleccionada) return [];
+  // 3. Filtramos los datos que nos pasaron
+  const datosFiltrados = React.useMemo(() => {
+    if (!fuenteDeDatos) return [];
+    let datosTemp = fuenteDeDatos;
 
-    return estudiantes.filter(est => 
-      est.año === añoSeleccionado && est.seccion === seccionSeleccionada
-    );
-  }, [añoSeleccionado, seccionSeleccionada]);
-
-  // 4. GENERAMOS LAS OPCIONES DE MATERIA a partir de los estudiantes YA FILTRADOS.
-  const materiaOptionsDinamicas = useMemo(() => {
-    if (estudiantesFiltrados.length === 0) return [];
-
-    const todasLasMaterias = estudiantesFiltrados.flatMap(est => est.materias);
-    const materiasUnicas = [...new Set(todasLasMaterias)];
+    // Si no es vista de profesor, aplicamos los filtros de año y sección
+    if (!vistaProfesor) {
+        if (añoSeleccionado && seccionSeleccionada) {
+            datosTemp = datosTemp.filter(item => item.año === añoSeleccionado && item.seccion === seccionSeleccionada);
+        } else {
+            return []; // No mostrar nada si no se selecciona año y sección en vista estudiante
+        }
+    }
     
-    // Capitalizamos la primera letra para un mejor look
-    return materiasUnicas.map(materia => ({ 
-      value: materia, 
-      label: materia 
-    }));
-  }, [estudiantesFiltrados]); // Se recalcula cada vez que el grupo de estudiantes cambia
+    if (busqueda) {
+      datosTemp = datosTemp.filter(item => item.nombre.toLowerCase().includes(busqueda.toLowerCase()));
+    }
+    
+    return datosTemp;
+  }, [añoSeleccionado, seccionSeleccionada, busqueda, fuenteDeDatos, vistaProfesor]);
+
+  const materiaOptionsDinamicas = React.useMemo(() => {
+    const prop = vistaProfesor ? 'asignaturas' : 'materias';
+    const todasLasMaterias = datosFiltrados.flatMap(item => item[prop]);
+    const materiasUnicas = [...new Set(todasLasMaterias)];
+    return materiasUnicas.map(materia => ({ value: materia, label: materia }));
+  }, [datosFiltrados, vistaProfesor]);
+
 
   // 5. EFECTO PARA REINICIAR LA MATERIA
   // Si el usuario cambia el año o la sección, la materia seleccionada anteriormente
   // podría ya no ser válida. La reiniciamos para forzar una nueva selección.
-  useEffect(() => {
+  React.useEffect(() => {
     setMateriaSeleccionada('');
   }, [añoSeleccionado, seccionSeleccionada]);
 
-  // 6. FILTRO FINAL (incluyendo la barra de búsqueda)
-  const datosParaTabla = useMemo(() => {
-    if (!busqueda) return estudiantesFiltrados;
-    return estudiantesFiltrados.filter(est =>
-      est.nombre.toLowerCase().includes(busqueda.toLowerCase())
-    );
-  }, [estudiantesFiltrados, busqueda]);
+  const filtrosActivos = vistaProfesor || (añoSeleccionado && seccionSeleccionada && materiaSeleccionada);
 
   return (
     <>
-      {/* ... (Encabezado sin cambios) ... */}
       <Typography variant="h5" sx={{ margin: 0, fontWeight: 'bold' }}>Registro de Asistencias</Typography>
       <Typography variant="subtitle2" sx={{ margin: 0, color: 'text.secondary', mb: 2 }}>
         Aquí puedes registrar y gestionar las asistencias diarias de los estudiantes.
@@ -75,7 +73,7 @@ export default function RegistroDiario() {
       
       <Box sx={{display: 'flex', flexDirection: 'column', mt: 2 }}>
         {/* Pasamos las opciones DINÁMICAS al componente de botones */}
-        <BotonesRegistrosDiario 
+        <BotonesRegistros
           año={añoSeleccionado}
           seccion={seccionSeleccionada}
           materia={materiaSeleccionada}
@@ -84,18 +82,39 @@ export default function RegistroDiario() {
           onSeccionChange={setSeccionSeleccionada}
           onMateriaChange={setMateriaSeleccionada}
           onBusquedaChange={setBusqueda}
-          // ¡Aquí pasamos las opciones generadas!
           añoOptions={añoOptions}
           seccionOptions={seccionOptions}
           materiaOptions={materiaOptionsDinamicas}
+          vistaProfesor={vistaProfesor}
+          registroDiario={true}
+          registroMensual={false}
         />
+
+        { filtrosActivos ?
         
-        {/* Pasamos los datos finales a la tabla */}
-        <TablarRegistroDiario estudiantesFiltrados={datosParaTabla} />
+          // Si los filtros están activos, mostramos la tabla.
+          <TablarRegistroDiario fuenteDeDatos={datosFiltrados} vistaProfesor={vistaProfesor} /> : (
+            // SI NO, mostramos el cuadro de ayuda.
+            <Box sx={{  
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              border: '2px dashed #ccc',
+              borderRadius: '8px',
+              backgroundColor: '#fafafa',
+              height: '250px',
+              mt: 3
+            }}>
+              <Typography variant="h6" color="text.secondary">
+                Seleccione un Año, una Sección y Materia para ver los registros.
+              </Typography>
+            </Box>
+          )
+        }
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" disabled={!filtrosActivos}>
           Guardar Cambios
         </Button>
       </Box>

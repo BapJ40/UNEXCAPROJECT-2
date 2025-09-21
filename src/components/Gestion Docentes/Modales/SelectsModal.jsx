@@ -1,5 +1,5 @@
 import React from 'react'
-import DropdownSelector from '../Componente generico/BotonGrado'
+import DropdownSelector from '../../Componente generico/BotonGrado'
 import { Box } from '@mui/material';
 
 export default function SelectsModal( { docente, grado, seccion, materia, onGradoChange, onSeccionChange, onMateriaChange } ) {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, Grid, Typography,} from '@mui/material';
-import GenericTextField from '../Componente generico/TextfildGenerico'; // <-- Importamos nuestro componente
-import DropdownSelector from '../Componente generico/BotonGrado'; // <-- Importamos el selector desplegable
-import { gradoOptions, seccionOptions, materiaOptions } from '../Componente generico/ConfigOptions';
+import GenericTextField from '../../Componente generico/TextfildGenerico'; // <-- Importamos nuestro componente
+import DropdownSelector from '../../Componente generico/BotonGrado'; // <-- Importamos el selector desplegable
+import { gradoOptions, seccionOptions, materiaOptions } from '../../Componente generico/ConfigOptions';
 
 // Valores iniciales del formulario
 const initialValues = {
@@ -12,25 +12,25 @@ const initialValues = {
   fechaNacimiento: '',
   numeroTelefono: '',
   email: '',
-  seccion: '',
-  anoEscolar: '',
-  materias: '',
+  // Campos para los selectores múltiples
+  gradosAsignados: [],
+  seccionesAsignadas: [],
+  asignaturas: [],
+   // Es buena idea añadir todos los campos del objeto docente aquí
+  cargo: '',
+  estado: 'Activo',
 };
 
 export default function InputsModalDocente() {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [anoEscolar, setAnoEscolar] = React.useState([]);
-  const [seccion, setSeccion] = React.useState([]);
-  const [materias, setMaterias] = React.useState([]);
 
-  // Manejador genérico para todos los campos de texto
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setValues({
-      ...values,
+    setValues(prevValues => ({
+      ...prevValues,
       [name]: value
-    });
+    }));
   };
 
   // Función de validación
@@ -59,13 +59,14 @@ export default function InputsModalDocente() {
     e.preventDefault(); // Previene el comportamiento por defecto del formulario
     if (validate()) {
       // Si la validación es exitosa, aquí enviarías los datos a tu API
-      console.log("Formulario válido, enviando datos:", values);
-      alert("Docente registrado exitosamente.");
-      // Opcional: limpiar el formulario
-      setValues(initialValues);
-      setErrors({});
+      console.log("Formulario válido, enviando datos del docente:", values);
+    alert("Docente registrado exitosamente.");
+    setValues(initialValues);
+    setErrors({});
     } else {
+      // Si la validación falla, puedes mostrar un mensaje de error
       console.log("El formulario contiene errores.");
+      alert("Por favor, corrige los errores en el formulario.");
     }
   };
 
@@ -139,35 +140,35 @@ export default function InputsModalDocente() {
       <Typography variant="h6" sx={{ mt: 3, mb: 2 }}>
         Areas de Enseñanza
       </Typography>
-      <Grid item xs={12} sx={{ mb: 2 }}> {/* Modificado */}
-            <DropdownSelector
-                    label="Sección"
-                    options={seccionOptions}
-                    value={seccion}
-                    onChange={(e) => setSeccion(e.target.value)}
-                    error={errors.anoEscolar}
-                    multiple // Permite seleccionar múltiples años escolares
-            />
+        <Grid item xs={12}>
+          <DropdownSelector
+            label="Año Escolar Asignado"
+            name="gradosAsignados" // <-- El 'name' debe coincidir con la clave en 'initialValues'
+            options={gradoOptions}
+            value={values.gradosAsignados} // <-- Leemos del estado 'values'
+            onChange={handleInputChange} // <-- Usamos el manejador único
+            multiple
+          />
         </Grid>
-        <Grid item xs={12} sx={{ mb: 2 }}> {/* Modificado */}
-            <DropdownSelector
-                label="Año Escolar"
-                value={anoEscolar}
-                options={gradoOptions}
-                onChange={(e) => setAnoEscolar(e.target.value)}
-                error={errors.anoEscolar}
-                multiple // Permite seleccionar múltiples años escolares}
-            />
+        <Grid item xs={12}>
+          <DropdownSelector
+            label="Secciones Asignadas"
+            name="seccionesAsignadas" // <-- El 'name' debe coincidir
+            options={seccionOptions}
+            value={values.seccionesAsignadas} // <-- Leemos del estado 'values'
+            onChange={handleInputChange} // <-- Usamos el manejador único
+            multiple
+          />
         </Grid>
-        <Grid item xs={12} sx={{ mb: 2 }}>
-            <DropdownSelector
-                label="Materia"
-                value={materias}
-                options={materiaOptions}
-                onChange={(e) => setMaterias(e.target.value)}
-                error={errors.materias}
-                multiple
-        />
+        <Grid item xs={12}>
+          <DropdownSelector
+            label="Materias que Imparte"
+            name="asignaturas" // <-- El 'name' debe coincidir
+            options={materiaOptions}
+            value={values.asignaturas} // <-- Leemos del estado 'values'
+            onChange={handleInputChange} // <-- Usamos el manejador único
+            multiple
+          />
         </Grid>
       <Button
         type="submit"

@@ -5,6 +5,7 @@ import RegistroDiario from './Registro Diario/Registro-Diario';
 import RegistroMensual from './Registro Mensual/RegistroMensual';
 import ConsultarAsistencia from './Consultar Asistencia/ConsultarAsistencia';
 import Reportes from './Reporte/Reportes';
+import estudiantes from '../Estudiantes';
 
 export default function AsistenciaEstudiantil() {
   const [vistalActual, setVistaActual] = React.useState('diario');
@@ -16,15 +17,15 @@ export default function AsistenciaEstudiantil() {
   const renderizarVista = () => {
     switch (vistalActual) {
       case 'diario':
-        return <RegistroDiario />;
+        return <RegistroDiario fuenteDeDatos={estudiantes} />;
       case 'mensual':
-        return <RegistroMensual />;
+        return <RegistroMensual fuenteDeDatos={estudiantes} />;
       case 'historial':
-        return <ConsultarAsistencia />;
+        return <ConsultarAsistencia fuenteDeDatos={estudiantes} />;
       case 'reportes':
-        return <Reportes />;
+        return <Reportes fuenteDeDatos={estudiantes} />;
       default:
-        return <RegistroDiario />;
+        return <RegistroDiario fuenteDeDatos={estudiantes} />;
     }
   };
   

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Box, Autocomplete, TextField } from '@mui/material';
 import DetalleAsistenciaEstudiante from './DetalleAsistenciaEstudiante'; // <-- Crearemos este nuevo componente
 
-export default function VistaPorEstudiante({ todosLosEstudiantes }) {
+export default function VistaPorEstudiante({ todosLosEstudiantes, vistaProfesor }) {
   // 1. Estado para guardar el OBJETO COMPLETO del estudiante seleccionado
   const [estudianteSeleccionado, setEstudianteSeleccionado] = useState(null);
 
   return (
     <Box>
+      
+      
       {/* 2. Reemplazamos Barradebusqueda con Autocomplete */}
       <Autocomplete
         options={todosLosEstudiantes} // La lista de opciones es todos los estudiantes
@@ -22,7 +24,7 @@ export default function VistaPorEstudiante({ todosLosEstudiantes }) {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Buscar Estudiante"
+            label={vistaProfesor ? "Buscar Docente" : "Buscar Estudiante"}
             placeholder="Escribe un nombre o cédula..."
             sx={{ width: '400px' }}
           />
@@ -30,11 +32,13 @@ export default function VistaPorEstudiante({ todosLosEstudiantes }) {
       />
 
       {/* 3. Renderizado condicional: La tabla de detalles solo aparece si se ha seleccionado un estudiante */}
-      {estudianteSeleccionado && (
+      {estudianteSeleccionado ? (
         <Box sx={{ mt: 4 }}>
-          <DetalleAsistenciaEstudiante estudiante={estudianteSeleccionado} />
+          <DetalleAsistenciaEstudiante datos={estudianteSeleccionado} vistaProfesor={vistaProfesor} />
         </Box>
-      )}
+      ) : (vistaProfesor && <Box sx={{ mt: 4 }}>
+          <DetalleAsistenciaEstudiante datos={todosLosEstudiantes} vistaProfesor={vistaProfesor} />
+        </Box>)}
     </Box>
   );
 }
